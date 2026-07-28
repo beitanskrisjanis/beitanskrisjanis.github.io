@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krisjanis Beitans — Data Engineer</title>
+<style>
+  /* ============ TOKENS ============
+     Aesthetic: stratigraphy. A career read as rock layers — you drill down
+     through strata into each role. Ink-on-bone palette, one electric seam.
+     Display: Space Grotesk (structural, engineered). Body: Inter. Data: JetBrains Mono.
+  */
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bone:#EDE9E0;         /* background */
+    --bone-2:#E4DFD3;       /* raised surface */
+    --ink:#16150F;          /* near-black text */
+    --ink-soft:#4A473C;     /* secondary text */
+    --ink-faint:#8A8677;    /* captions */
+    --seam:#2B4CF0;         /* the electric seam — one accent, used sparingly */
+    --seam-dim:#2B4CF022;
+    --rule:#16150F1A;       /* hairline */
+    --strata-1:#D9D3C4;
+    --strata-2:#CFC8B6;
+    --strata-3:#C4BCA6;
+    --strata-4:#B8AF97;
+    --strata-5:#ACA38A;
+    --radius:2px;
+    --maxw:940px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--seam);color:var(--bone)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* ============ NAV ============ */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--bone);
+    border-bottom:1px solid var(--rule);
+    backdrop-filter:blur(6px);
+  }
+  nav .wrap{display:flex;align-items:baseline;justify-content:space-between;padding-top:18px;padding-bottom:18px}
+  .brand{font-family:'Space Grotesk';font-weight:700;font-size:16px;letter-spacing:-0.01em}
+  .brand span{color:var(--seam)}
+  .navlinks{display:flex;gap:26px;font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:0.02em}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;position:relative;padding-bottom:2px;transition:color .18s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1.5px;background:var(--seam);transition:width .22s}
+  .navlinks a:hover::after,.navlinks a.active::after{width:100%}
+
+  /* ============ HERO ============ */
+  header{padding:88px 0 64px;position:relative}
+  .eyebrow{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+  h1{
+    font-family:'Space Grotesk';font-weight:700;
+    font-size:clamp(38px,7vw,72px);line-height:0.98;letter-spacing:-0.03em;
+    margin-bottom:26px;
+  }
+  h1 .depth{display:block;color:var(--seam)}
+  .lede{font-size:clamp(17px,2.4vw,20px);color:var(--ink-soft);max-width:60ch;margin-bottom:34px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px 8px;font-family:'JetBrains Mono';font-size:12.5px}
+  .chip{border:1px solid var(--rule);padding:6px 12px;border-radius:100px;color:var(--ink-soft);background:var(--bone-2)}
+
+  /* ============ SECTION HEADINGS ============ */
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin:0 0 8px;padding-top:40px}
+  .sec-num{font-family:'JetBrains Mono';font-size:13px;color:var(--seam)}
+  .sec-title{font-family:'Space Grotesk';font-weight:600;font-size:22px;letter-spacing:-0.01em}
+  .sec-note{color:var(--ink-faint);font-size:14px;margin-bottom:36px;max-width:56ch}
+
+  /* ============ STRATIGRAPHIC TIMELINE ============ */
+  .strata{position:relative;padding-bottom:40px}
+  .layer{
+    position:relative;
+    border:1px solid var(--rule);
+    border-radius:var(--radius);
+    margin-bottom:-1px;
+    background:var(--surface,var(--strata-1));
+    cursor:pointer;
+    transition:transform .2s cubic-bezier(.2,.7,.3,1),box-shadow .2s;
+    overflow:hidden;
+  }
+  .layer:hover{z-index:5;box-shadow:-6px 6px 0 var(--seam-dim);transform:translateX(4px)}
+  .layer.open{z-index:6;box-shadow:-8px 8px 0 var(--seam-dim);cursor:default}
+  .layer-bar{display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:center;padding:20px 24px}
+  .layer-years{font-family:'JetBrains Mono';font-size:12.5px;color:var(--ink-soft);line-height:1.35}
+  .layer-years b{display:block;color:var(--ink);font-weight:500}
+  .layer-role{font-family:'Space Grotesk';font-weight:600;font-size:17px;letter-spacing:-0.01em}
+  .layer-co{font-size:13.5px;color:var(--ink-soft);margin-top:1px}
+  .layer-co .loc{color:var(--ink-faint)}
+  .layer-toggle{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:100px;padding:5px 12px;white-space:nowrap;transition:all .18s;background:rgba(255,255,255,.25)}
+  .layer:hover .layer-toggle{border-color:var(--seam);color:var(--seam)}
+  .layer.open .layer-toggle{background:var(--seam);color:var(--bone);border-color:var(--seam)}
+
+  .layer-body{max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s;padding:0 24px}
+  .layer.open .layer-body{max-height:1200px;opacity:1;padding-bottom:26px}
+  .layer-body-inner{padding-left:114px;border-top:1px dashed var(--rule);padding-top:20px}
+  @media(max-width:640px){.layer-body-inner{padding-left:0}}
+  .lb-summary{font-size:15px;color:var(--ink-soft);margin-bottom:18px;max-width:64ch}
+  .lb-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;margin-bottom:18px}
+  @media(max-width:640px){.lb-grid{grid-template-columns:1fr}}
+  .lb-block h4{font-family:'JetBrains Mono';font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px}
+  .lb-block ul{list-style:none;font-size:14px;color:var(--ink-soft)}
+  .lb-block li{position:relative;padding-left:16px;margin-bottom:7px;line-height:1.5}
+  .lb-block li::before{content:'';position:absolute;left:0;top:9px;width:5px;height:5px;background:var(--seam);border-radius:1px}
+  .lb-learnt{font-size:14px;color:var(--ink);background:var(--bone);border-left:2px solid var(--seam);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0}
+  .lb-learnt b{font-family:'JetBrains Mono';font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--seam);display:block;margin-bottom:5px;font-weight:500}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  .tag{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-soft);background:var(--bone);border:1px solid var(--rule);padding:3px 9px;border-radius:3px}
+  .case-link{display:inline-block;margin-top:16px;font-family:'JetBrains Mono';font-size:12.5px;color:var(--seam);text-decoration:none;border-bottom:1px solid var(--seam);padding-bottom:1px}
+  .case-link:hover{color:var(--ink)}
+
+  .depth-label{position:absolute;left:-4px;top:0;bottom:40px;display:flex;flex-direction:column;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;color:var(--ink-faint);pointer-events:none}
+
+  /* ============ TECH STACK ============ */
+  .stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:20px}
+  @media(max-width:720px){.stack-grid{grid-template-columns:1fr}}
+  .stack-card{border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;background:var(--bone-2)}
+  .stack-card-wide{grid-column:1/-1}
+  .stack-card h4{font-family:'Space Grotesk';font-weight:600;font-size:15px;letter-spacing:-0.01em;margin-bottom:6px}
+  .stack-note{font-size:13px;color:var(--ink-faint);margin-bottom:14px;max-width:52ch}
+  .stack-card .tags{margin-top:0}
+  .stack-stage{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--seam);border:1px solid var(--seam);border-radius:100px;padding:2px 8px;margin-left:8px;vertical-align:middle}
+  .tag-explore{border-style:dashed;color:var(--ink-faint)}
+
+  /* ============ EDUCATION ============ */
+  .edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding-bottom:20px}
+  @media(max-width:720px){.edu{grid-template-columns:1fr}}
+  .edu-card{border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;background:var(--bone-2)}
+  .edu-card .yr{font-family:'JetBrains Mono';font-size:11.5px;color:var(--seam);margin-bottom:8px}
+  .edu-card h4{font-family:'Space Grotesk';font-size:15px;font-weight:600;line-height:1.25;margin-bottom:5px}
+  .edu-card p{font-size:13px;color:var(--ink-soft)}
+
+  /* ============ FOOTER ============ */
+  footer{border-top:1px solid var(--rule);margin-top:70px;padding:40px 0 60px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+  .contact{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:'JetBrains Mono';font-size:13px}
+  .contact a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--seam);padding-bottom:1px;transition:color .18s}
+  .contact a:hover{color:var(--seam)}
+  .foot-note{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-faint)}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+  a:focus-visible,.layer:focus-visible{outline:2px solid var(--seam);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">KB<span>.IT</span></div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Experience</a>
+      <a href="mindset.html">State of Mind</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Data Engineer · Riga / Remote · EU &amp; B2B worldwide</div>
+    <h1>Krisjanis Beitans<span class="depth">drills into data.</span></h1>
+    <p class="lede">Six years turning messy operational data into platforms people actually trust — across <strong>gaming, fintech, banking, and e-commerce</strong>. Started in BI and on-prem ETL, now building lakehouses on AWS and GCP with dbt at the core. I keep learning what's new in the field, and I keep it practical. I bring structure — I can walk into a messy team and get them to reliable data.</p>
+    <div class="meta-row">
+      <span class="chip">dbt</span>
+      <span class="chip">Iceberg · Lakehouse</span>
+      <span class="chip">Python</span>
+      <span class="chip">AWS · GCP</span>
+      <span class="chip">Power BI · Metabase</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="experience">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Career strata</span>
+    </div>
+    <p class="sec-note">Read top-down: most recent work sits at the surface, foundational work runs deeper. Drill into any layer to see what I built and what it taught me.</p>
+
+    <div class="strata" id="strata"><!-- layers injected by JS --></div>
+  </section>
+
+  <section id="stack">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Stack, by layer</span>
+    </div>
+    <p class="sec-note">Same logic as the platforms I build: broken out by what each tool is actually for, not a flat wall of logos.</p>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <h4>Ingestion</h4>
+        <p class="stack-note">Whatever gets data out of the source reliably — API, CDC, or batch, matched to what the source allows.</p>
+        <div class="tags">
+          <span class="tag">Custom Python connectors</span>
+          <span class="tag">dlt</span>
+          <span class="tag">Debezium / Debezium Server</span>
+          <span class="tag">Kafka</span>
+          <span class="tag">Airbyte</span>
+          <span class="tag">Airflow</span>
+          <span class="tag">Scrapy</span>
+          <span class="tag">Pentaho</span>
+          <span class="tag">Oracle OCI</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>Data processing</h4>
+        <p class="stack-note">SQL-first. Python and Spark step in when SQL runs out of road.</p>
+        <div class="tags">
+          <span class="tag">dbt</span>
+          <span class="tag">SQL / stored procedures</span>
+          <span class="tag">PySpark</span>
+          <span class="tag">Scala Spark</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>Data formats</h4>
+        <p class="stack-note">The shape data takes on disk and in transit, mostly from the Python side.</p>
+        <div class="tags">
+          <span class="tag">Parquet</span>
+          <span class="tag">Arrow</span>
+          <span class="tag">Avro</span>
+          <span class="tag">JSON</span>
+          <span class="tag">ORC</span>
+          <span class="tag">Iceberg</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>Open table formats &amp; catalogs</h4>
+        <p class="stack-note">Iceberg as the table format; the catalog is what actually decides how locked in you are.</p>
+        <div class="tags">
+          <span class="tag">Apache Iceberg</span>
+          <span class="tag">PyIceberg</span>
+          <span class="tag">AWS Glue Catalog</span>
+          <span class="tag">Polaris (evaluated)</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>Cloud — GCP</h4>
+        <p class="stack-note">Primary cloud for orchestration-heavy, streaming-adjacent pipelines.</p>
+        <div class="tags">
+          <span class="tag">BigQuery</span>
+          <span class="tag">Dataflow</span>
+          <span class="tag">Composer</span>
+          <span class="tag">Pub/Sub</span>
+          <span class="tag">DataProc</span>
+          <span class="tag">Cloud Storage</span>
+          <span class="tag">IAM</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>Cloud — AWS</h4>
+        <p class="stack-note">Primary cloud for the Iceberg lakehouse — query, compute, and the containers that run custom tooling.</p>
+        <div class="tags">
+          <span class="tag">Athena</span>
+          <span class="tag">S3</span>
+          <span class="tag">Glue</span>
+          <span class="tag">IAM</span>
+          <span class="tag">Terraform</span>
+          <span class="tag">Lambda</span>
+          <span class="tag">EKS (self-run)</span>
+          <span class="tag">Argo Workflows</span>
+          <span class="tag">ECR</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h4>AI / ML <span class="stack-stage">exploring</span></h4>
+        <p class="stack-note">Hands-on via POCs and personal projects, not yet production — the honest state of most enterprise AI right now.</p>
+        <div class="tags">
+          <span class="tag tag-explore">AWS Bedrock</span>
+          <span class="tag tag-explore">AWS SageMaker</span>
+          <span class="tag tag-explore">Claude / Claude Code / MCP agents</span>
+          <span class="tag tag-explore">RAG · vector DB · embeddings</span>
+        </div>
+      </div>
+      <div class="stack-card stack-card-wide">
+        <h4>BI &amp; consumption</h4>
+        <p class="stack-note">Where the platform meets the person asking the question.</p>
+        <div class="tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">Metabase</span>
+          <span class="tag">MicroStrategy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Certified</span>
+    </div>
+    <p class="sec-note">The AWS push, made official.</p>
+    <div class="edu">
+      <div class="edu-card">
+        <div class="yr">Expires Nov 2028</div>
+        <h4>AWS Certified AI Practitioner</h4>
+        <p>Amazon Web Services</p>
+      </div>
+      <div class="edu-card">
+        <div class="yr">Expires Mar 2029</div>
+        <h4>AWS Certified Developer – Associate</h4>
+        <p>Amazon Web Services</p>
+      </div>
+      <div class="edu-card">
+        <div class="yr">Expires May 2028</div>
+        <h4>AWS Certified Machine Learning Engineer – Associate</h4>
+        <p>Amazon Web Services</p>
+      </div>
+      <div class="edu-card">
+        <div class="yr">Expires Jul 2028</div>
+        <h4>AWS Certified Machine Learning – Specialty</h4>
+        <p>Amazon Web Services</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Bedrock</span>
+    </div>
+    <p class="sec-note">Where the foundation was laid.</p>
+    <div class="edu">
+      <div class="edu-card">
+        <div class="yr">2021 – 2023</div>
+        <h4>MSc, Computer Science</h4>
+        <p>University of Latvia</p>
+      </div>
+      <div class="edu-card">
+        <div class="yr">2017 – 2021</div>
+        <h4>BSc, Computer Science</h4>
+        <p>University of Latvia</p>
+      </div>
+      <div class="edu-card">
+        <div class="yr">2014 – 2017</div>
+        <h4>Prof. Bachelor, Medical Engineering &amp; Physics</h4>
+        <p>Riga Technical University</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <a href="mailto:krisjanis.beitans@gmail.com">krisjanis.beitans@gmail.com</a>
+      <a href="https://www.linkedin.com/in/krisjanis-beitans/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mindset.html">Read my current state of mind →</a>
+    </div>
+    <div class="foot-note">Built as data, rendered as rock.</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONTENT — edit here to update the CV. Each role is one stratum.
+   Order: surface (newest) → deep (oldest).
+   ============================================================ */
+const ROLES = [
+  {
+    years:["2024","now"], role:"Senior Data Engineer", co:"GOStack — Yggdrasil Gaming", loc:"Riga, LV",
+    surface:"--strata-1",
+    summary:"Led the migration of Yggdrasil Gaming's dual-cloud (GCP + AWS) platform into a single AWS Iceberg lakehouse — documented in an AWS Big Data blog post, with a 60% cut in data processing costs and analytics latency down from 2 hours to 30 minutes.",
+    built:[
+      "Migrated from a GCP stack (BigQuery, Dataproc/Spark, Airflow, Cloud Run) to an AWS Iceberg lakehouse on S3 (Parquet, ZSTD), cataloged in Glue and queried via Athena",
+      "Built CDC ingestion with Debezium Server Iceberg and a custom outbox-to-Avro pipeline; layered raw (ingestion-time) → curated (business-key) → analytics zones",
+      "Made dbt-on-Athena the core transformation tool, orchestrated on Argo Workflows with Argo CD for GitOps deploys; Lambda and EMR cover the compute layer",
+      "Enforced row/column-level access via AWS Lake Formation for multi-tenant gaming and iGaming partners"
+    ],
+    stack:["dbt","Athena","Iceberg","S3","Glue","Lake Formation","EMR","Lambda","Debezium","Argo Workflows","Argo CD","BigQuery","Terraform"],
+    learnt:"That layer boundaries are really access-control and debugging boundaries in disguise. The cleanest platforms I've built were the ones where every table's IAM role and failure mode was obvious from where it lived.",
+    caseStudy:{label:"Read the AWS write-up", url:"https://aws.amazon.com/blogs/big-data/building-a-modern-lakehouse-architecture-yggdrasil-gamings-journey-from-bigquery-to-aws/"}
+  },
+  {
+    years:["2023","2024"], role:"Data Engineer", co:"KB IT — Vivere", loc:"Riga, LV",
+    surface:"--strata-2",
+    summary:"Built a market-intelligence tool for Vivere, a manufacturer and e-commerce startup — automated analysis to surface new market opportunities, starting with basic ML models and evolving into LLM-based suggestions as the approach matured.",
+    built:[
+      "Designed and built an automated analytical solution to surface new market opportunities from product and review data",
+      "Started with basic ML models for signal detection, then layered in LLM-based suggestions as the tooling matured",
+      "Built the ingestion and processing pipeline feeding the tool, from raw marketplace/review data through to model-ready features",
+      "Custom Python apps: third-party API integrations, review analysis, product intelligence tooling"
+    ],
+    stack:["Python","Machine Learning","LLM APIs","REST APIs"],
+    learnt:"Building for a startup meant owning the product decision as much as the pipeline — and watching a heuristic-driven tool get meaningfully better once LLMs could reason over the same signals directly."
+  },
+  {
+    years:["2022","2024"], role:"Data Engineer", co:"28stone Consulting", loc:"New York, US",
+    surface:"--strata-3",
+    summary:"Consulting for one of the world's largest banks — a very large-scale data warehouse migration from MSSQL Server to Snowflake, with huge upstream and downstream dependencies and millions of reports riding on it.",
+    built:[
+      "Led the MSSQL Server → Snowflake migration for a core enterprise data warehouse",
+      "Built and maintained a custom Python-based ETL tool for extract/load across varied sources",
+      "SQL-based transformations, with dbt models where the project supported it",
+      "Azure delivery — Data Factory, Databricks, DevOps"
+    ],
+    stack:["Snowflake","Python","dbt","SQL","Azure Data Factory","Databricks","Azure DevOps"],
+    learnt:"What data actually looks like at bank scale — millions of reports, heavy regulatory demands, and dependency graphs running deep both upstream and downstream. Consulting also sharpens the instinct for walking into an unfamiliar landscape and finding the load-bearing walls fast."
+  },
+  {
+    years:["2021","2022"], role:"Data Engineer", co:"Sun Finance", loc:"Riga, LV",
+    surface:"--strata-4",
+    summary:"Fintech consumer lending across multiple countries — my first in-house product role, not a client engagement. High-throughput, regulated, transaction-heavy: the environment that taught me what production reliability actually costs.",
+    built:[
+      "Oracle Autonomous Data Warehouse with a Data Vault modelling approach for auditability",
+      "Change data capture and streaming via Apache Kafka",
+      "Python services extracting data from operational APIs",
+      "Airflow orchestration across the pipeline landscape"
+    ],
+    stack:["Oracle ADW","Oracle Data Integrator","Apache Kafka","Python","Airflow","Data Vault"],
+    learnt:"First exposure to streamed pipelines, and a different kind of focus that comes from building in-house instead of for a client. Picked up new DWH design principles here, and what it actually takes to work with data in motion instead of data at rest."
+  },
+  {
+    years:["2019","2021"], role:"BI Developer", co:"Visma", loc:"Riga, LV",
+    surface:"--strata-5",
+    summary:"Nordic business software — accounting, payroll, HR, e-commerce for SMEs. Worked with customers across Europe, mostly on reporting and budgeting solutions.",
+    built:[
+      "BI development in MicroStrategy and Power BI",
+      "Warehouse development on MS SQL and PostgreSQL",
+      "ETL pipelines in Pentaho Data Integration",
+      "Numerous budgeting projects — BI front-end plus writeback functionality"
+    ],
+    stack:["MicroStrategy","Power BI","MS SQL","PostgreSQL","Pentaho"],
+    learnt:"My first real translation of business requirements into data — designing my first dimensional models, and learning what a genuinely structured enterprise process looks like from the inside."
+  }
+];
+
+const strata = document.getElementById('strata');
+ROLES.forEach((r,i)=>{
+  const el = document.createElement('article');
+  el.className='layer';
+  el.style.setProperty('--surface',`var(${r.surface})`);
+  el.tabIndex=0;
+  el.innerHTML=`
+    <div class="layer-bar">
+      <div class="layer-years"><b>${r.years[0]}</b>${r.years[1]==='now'?'present':'– '+r.years[1]}</div>
+      <div>
+        <div class="layer-role">${r.role}</div>
+        <div class="layer-co">${r.co} <span class="loc">· ${r.loc}</span></div>
+      </div>
+      <div class="layer-toggle">drill down</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <p class="lb-summary">${r.summary}</p>
+        <div class="lb-grid">
+          <div class="lb-block">
+            <h4>What I built</h4>
+            <ul>${r.built.map(b=>`<li>${b}</li>`).join('')}</ul>
+          </div>
+          <div class="lb-block">
+            <h4>What I took away</h4>
+            <div class="lb-learnt"><b>Learnt</b>${r.learnt}</div>
+          </div>
+        </div>
+        <div class="tags">${r.stack.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+        ${r.caseStudy?`<a class="case-link" href="${r.caseStudy.url}" target="_blank" rel="noopener">${r.caseStudy.label} ↗</a>`:''}
+      </div>
+    </div>`;
+  const toggle=()=>{
+    const open=el.classList.contains('open');
+    document.querySelectorAll('.layer.open').forEach(o=>{o.classList.remove('open');o.querySelector('.layer-toggle').textContent='drill down';});
+    if(!open){el.classList.add('open');el.querySelector('.layer-toggle').textContent='surface';}
+  };
+  el.addEventListener('click',e=>{ if(!e.target.closest('a')) toggle(); });
+  el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} });
+  strata.appendChild(el);
+});
+</script>
+</body>
+</html>
