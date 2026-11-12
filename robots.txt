@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beitanskrisjanis.github.io/sitemap.xml
