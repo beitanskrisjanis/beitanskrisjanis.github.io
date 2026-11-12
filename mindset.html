@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Krisjanis Beitans — Current State of Mind</title>
+<meta name="description" content="How Krisjanis Beitans thinks data platforms should be built — lakehouse architecture, metadata-as-code, and working alongside an AI data engineer.">
+<link rel="canonical" href="https://beitanskrisjanis.github.io/mindset.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Krisjanis Beitans — Current State of Mind">
+<meta property="og:description" content="How I think data platforms should be built — lakehouse architecture, metadata-as-code, and working alongside an AI data engineer.">
+<meta property="og:url" content="https://beitanskrisjanis.github.io/mindset.html">
+<meta property="og:image" content="https://beitanskrisjanis.github.io/img/ironman-finish.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Krisjanis Beitans — Current State of Mind">
+<meta name="twitter:description" content="How I think data platforms should be built — lakehouse architecture, metadata-as-code, and working alongside an AI data engineer.">
+<meta name="twitter:image" content="https://beitanskrisjanis.github.io/img/ironman-finish.jpg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
   :root{
@@ -198,6 +209,29 @@
     </div>
     <div class="stance">
       <p><span class="q">The POC is the easy part.</span> I love nothing more than building a proof of concept with the newest tech and seeing what it could actually replace. What's harder than it should be is getting a company to adopt it — real change means changing process, not just bolting on a new tool, and that's the part organizations resist.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">The AI data engineer I'd want running with me</span></div>
+    <p class="sec-note">One of my actual priorities right now — not an afterthought bolted onto finished work, but something I build toward from the start.</p>
+    <div class="prose">
+      <p>The platform in the sections above is the foundation, and that part doesn't change. What's changing is that I now build everything with half an eye on whether an agent could pick it up later — descriptions, <strong>AGENTS.md</strong>, instruction files checked into every repo as I go, not written after the fact because someone asked for them. And there's one general skills repo sitting above all of it: the place an agent checks first, <em>has something like this already been solved, and how</em> — before it starts from scratch.</p>
+    </div>
+    <div class="stance">
+      <p><span class="q">Every finished ticket becomes a skill, not just a closed ticket.</span> When I build something, I write up what I actually did — the pattern, the edge cases, the questions I had to go chase down before I could even start. That write-up goes into the skills repo and into the repo's own AGENTS.md. It's the deliverable, not a nice-to-have afterward.</p>
+    </div>
+    <div class="stance">
+      <p><span class="q">So the next similar request doesn't start from zero.</span> A Jira ticket or a ClickUp card comes in that looks like something I've already solved — the agent should recognize it, pull the matching skill, and have a draft PR or at least a real suggestion waiting before I've opened the ticket myself.</p>
+    </div>
+    <div class="stance">
+      <p><span class="q">And it should ask before I do.</span> If a ticket is missing something obvious — which tables it touches, who owns the downstream report, what the rollback looks like — it leaves a comment asking the person who opened it. I'd rather that gap get caught on day one than have me find it three days into the work.</p>
+    </div>
+    <div class="stance">
+      <p><span class="q">The judgment calls still land on my desk.</span> A draft PR or a comment is a starting point, not a decision. Anything ambiguous, anything architectural, anything that needs an actual conversation with a stakeholder — that's still mine. The skill library just means the obvious ninety percent of a ticket stops eating my time.</p>
+    </div>
+    <div class="prose" style="margin-top:8px">
+      <p>How far this actually goes, I don't know yet — think of it as a second me that's still finding its feet. Give it a year, and this is probably the section of this page that's changed the most.</p>
     </div>
   </section>
 
